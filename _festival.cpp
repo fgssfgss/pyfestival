@@ -65,6 +65,10 @@ static PyObject* _textToWav(PyObject* self, PyObject* args) {
     }
     fclose(fp);
     
+    festival_wait_for_spooler();
+
+    festival_tidy_up();
+
     PyObject *filename = PyUnicode_FromStringAndSize((const char *)tmpfile, tmpfile.length());
     return filename;
 }
@@ -145,8 +149,7 @@ static PyObject *festivalinit(void)
     if (module == NULL) {
         return NULL;
     }
-    // init festival - make the heap size 7MB
-    festival_initialize (1, 7*1024*1024);    
+    festival_initialize (1, 10000000);
     return module;
 }
 
